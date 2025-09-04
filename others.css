@@ -1,0 +1,8 @@
+/* =========================
+   レスポンシブ
+========================= */
+@media (max-width:720px){
+  .main{padding:12px}
+  .msg{grid-template-columns:1fr}
+  .nav-btn{background:#e5edff}
+}

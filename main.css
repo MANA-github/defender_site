@@ -1,0 +1,22 @@
+/* =========================
+   メインコンテンツ
+========================= */
+.main{
+  padding:18px;
+  overflow:auto;
+}
+.box{
+  background:var(--box);
+  color:var(--item);
+  border:1px solid var(--bd);
+  border-radius:var(--r);
+  padding:18px;
+  box-shadow:0 6px 20px rgba(0,0,0,.04);
+}
+/* ようこそ */
+.welcome{
+  font-size:clamp(18px,3.6vw,28px);
+  font-weight:900;
+  margin:0 0 12px;
+  text-align:center;   /* ← 追加：中央寄せ */
+}
