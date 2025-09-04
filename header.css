@@ -1,0 +1,10 @@
+/* === ヘッダー部分 === */
+.head {
+  padding:14px 20px;
+  border-bottom:1px solid var(--bd);
+  background:#fff;
+  font-weight:800;
+  font-size:clamp(22px,4vw,36px);
+  letter-spacing:.02em;
+  text-align:center;
+}

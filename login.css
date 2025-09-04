@@ -1,0 +1,13 @@
+/* === ログインフォーム全体 === */
+.login-wrap {
+  max-width:var(--mw);
+  margin:40px auto;
+  padding:0 20px;
+}
+.card {
+  background:var(--box);
+  border:1px solid var(--bd);
+  border-radius:var(--r);
+  box-shadow:0 6px 20px rgba(0,0,0,.06);
+  padding:28px;
+}
