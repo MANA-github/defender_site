@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<font size="7">title banner</font>
+<title>ようこそ○○さん</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 10px;
+    }
+    #welcome {
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #2c3e50;
+    }
+  </style>
+<body>
+  <label for="username">ユーザー名：</label>
+  <input type="text" id="username" placeholder="例：ライス">
+  <button onclick="showWelcome()">決定</button>
+
+  <p id="welcome"></p>
+
+<script>
+    function showWelcome() {
+      const name = document.getElementById("username").value;
+      const message = `ようこそ${name}さん！`;
+      document.getElementById("welcome").textContent = message;
+    }
+  </script>
+</body>
+
+<p><div style="border-top: 5px solid;"></div>
+</div></p>
+
+<button id="toggleBtn">☰</button>
+<aside id="sidebar" class="sidebar">
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">サイト情報</a></li>
+    <li><a href="#">設定</a></li>
+  </ul>
+</aside>
+
+<title>新着メッセージ</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .mailbox {
+      max-width: 320px;
+      margin: auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .mail {
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    .mail.unread {
+      background-color: #eaf4ff;
+      font-weight: bold;
+    }
+    .mail:last-child {
+      border-bottom: none;
+    }
+    .subject {
+      font-size: 16px;
+    }
+    .sender {
+      color: #555;
+      font-size: 14px;
+    }
+    .time {
+      float: right;
+      color: #999;
+      font-size: 12px;
+    }
+  </style>
+<body>
+
+  <div class="mailbox">
+    <div class="mail unread">
+      <div class="subject">【重要】パスワード変更のお知らせ</div>
+      <div class="sender">support@example.com <span class="time">09:30</span></div>
+    </div>
+    <div class="mail">
+      <div class="subject">新しいイベントのお知らせ</div>
+      <div class="sender">event@service.jp <span class="time">08:15</span></div>
+    </div>
+    <div class="mail">
+ <div class="subject">今週のニュースまとめ</div>
+      <div class="sender">news@weeklymail.com <span class="time">昨日</span></div>
+    </div>
+  </div>
+
+
+
+<div style="text-align: right;">
+  <p><span class="site-tag"> defensesite</span></p></div>
+
+</body>
+</html>
