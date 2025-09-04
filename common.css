@@ -1,0 +1,21 @@
+/* === 共通設定 === */
+:root {
+  --bg:#f5f7fb;
+  --tx:#111827;
+  --sub:#6b7280;
+  --box:#ffffff;
+  --bd:#e5e7eb;
+  --ac:#2563eb;
+  --r:12px;
+  --g:16px;
+  --mw:720px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin:0;
+  color:var(--tx);
+  background:var(--bg);
+  font:16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans JP", sans-serif;
+}

@@ -1,11 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="common.css" />
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="input.css" />
+  <link rel="stylesheet" href="btn.css" />
+  <link rel="stylesheet" href="msg.css" />
 </head>
 <body>
-    
+  <header class="head">title banner</header>
+
+  <main class="login-wrap">
+    <section class="card" aria-labelledby="login-title">
+      <h1 id="login-title" class="sr-only">Sign in</h1>
+
+      <form>
+        <div class="form-row">
+          <label class="label" for="uid">User ID</label>
+          <input class="input" id="uid" name="uid" autocomplete="username" />
+        </div>
+
+        <div class="form-row">
+          <label class="label" for="pwd">Password</label>
+          <input class="input" id="pwd" name="pwd" type="password" autocomplete="current-password" />
+        </div>
+
+        <button class="btn" type="submit">Sign in</button>
+
+        <!-- 認証失敗時に msg--show を付与して表示 -->
+        <p class="msg" role="alert">ID またはパスワードが違います。</p>
+      </form>
+    </section>
+  </main>
+
+  <span class="site-tag">defence site</span>
 </body>
 </html>
