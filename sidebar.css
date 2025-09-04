@@ -1,0 +1,38 @@
+/* =========================
+   サイドバー
+========================= */
+/* サイドバー本体 */
+.side{
+  background:var(--side);
+  color:var(--sideTx);
+  padding:10px 8px;
+  overflow:hidden;
+  transition:padding .25s ease;
+}
+/* ボタン表示 */
+.side .btn{
+  display:flex; align-items:center; gap:10px;
+  width:100%;
+  padding:12px 12px;
+  margin:6px 0;
+  border-radius:10px;
+  background:transparent;
+  color:inherit;
+  font-weight:700;
+  text-align:left;
+  border:1px solid rgba(255,255,255,.14);
+  cursor:pointer;
+}
+.side .btn:hover{background:rgba(255,255,255,.08)}
+.side .ic{width:20px; display:inline-grid; place-items:center;}
+.side .txt{white-space:nowrap; transition:opacity .2s ease, width .2s ease}
+
+/* 閉じたとき：テキストを隠し、アイコンだけ中央に */
+#nav-toggle:not(:checked) ~ .dash .side{padding:10px 6px}
+#nav-toggle:not(:checked) ~ .dash .side .btn{
+  justify-content:center;
+  padding:12px 8px;
+}
+#nav-toggle:not(:checked) ~ .dash .side .btn .txt{
+  width:0; opacity:0; overflow:hidden;
+}

@@ -1,0 +1,24 @@
+/* 全体レイアウト */
+/* レイアウト：サイド幅をトグルで変更 */
+.dash{
+  display:grid;
+  grid-template-rows: var(--hTop) 1fr;
+  grid-template-columns: var(--wSide) 1fr;
+  height:100vh;
+  transition:grid-template-columns .25s ease;
+}
+/* 閉じた状態は細い幅に */
+#nav-toggle{position:absolute; left:-9999px}
+#nav-toggle:not(:checked) ~ .dash{
+  grid-template-columns: var(--wSideMin) 1fr;
+}
+
+
+/* サイドとメインは2行目 */
+.side{ grid-row:2; overflow:hidden; }   /* ← overflow:auto を消す */
+.main{ 
+  grid-row:2; 
+  padding:18px; 
+  overflow:hidden;                      /* ← ここも auto → hidden */
+}
+

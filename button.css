@@ -1,0 +1,21 @@
+/* =========================
+   ナビ開閉ボタン（ハンバーガー）
+========================= */
+.nav-btn{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding:8px 10px;
+  border-radius:10px;
+  background:#eef2ff;
+  color:#1e3a8a;
+  font-weight:800;
+  cursor:pointer;
+  user-select:none;
+}
+.nav-btn .bar{
+  width:18px;
+  height:2px;
+  background:#1e3a8a;
+  box-shadow:0 6px 0 #1e3a8a, 0 -6px 0 #1e3a8a;
+}
