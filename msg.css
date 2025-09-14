@@ -1,0 +1,50 @@
+<<<<<<< HEAD
+/* === メッセージ（エラー表示用） === */
+.msg {
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid #fecaca;
+  background:#fff1f2;
+  color:#991b1b;
+  border-radius:8px;
+  display:none;       /* 失敗時だけ表示 */
+}
+/* 失敗時に .msg--show を付与 */
+.msg.msg--show { display:block; }
+
+/* === フッター右下の "defence site" === */
+.site-tag {
+  position:fixed;
+  right:10px;
+  bottom:10px;
+  color:var(--sub);
+  font-size:12px;
+}
+=======
+/* =========================
+   新着メッセージ
+========================= */
+.msg-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+.msg-list{display:grid; gap:10px}
+.msg{
+  background:#fff;
+  border:1px solid var(--bd);
+  border-radius:10px;
+  padding:12px 14px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+}
+.msg time{
+  color:var(--sub);
+  font-size:.9em;
+}
+.msg:hover{
+  border-color:color-mix(in lab, var(--ac) 35%, var(--bd));
+}
+>>>>>>> origin/def-home
