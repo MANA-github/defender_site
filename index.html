@@ -1,61 +1,44 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="base.css" />
-  <link rel="stylesheet" href="layout.css" />
-  <link rel="stylesheet" href="header.css" />
-  <link rel="stylesheet" href="sidebar.css" />
-  <link rel="stylesheet" href="button.css" />
-  <link rel="stylesheet" href="main.css" />
-  <link rel="stylesheet" href="msg.css" />
-  <link rel="stylesheet" href="site-tag.css" />
-  <link rel="stylesheet" href="others.css" />
+  <title>Login</title>
+  <link rel="stylesheet" href="styles/login/common.css" />
+  <link rel="stylesheet" href="styles/login/header.css" />
+  <link rel="stylesheet" href="styles/login/login.css" />
+  <link rel="stylesheet" href="styles/login/input.css" />
+  <link rel="stylesheet" href="styles/login/btn.css" />
+  <link rel="stylesheet" href="styles/login/msg.css" />
 </head>
 <body>
-  <!-- 開閉トグル（JS不要） -->
-  <input id="nav-toggle" type="checkbox" checked>
+  <header class="head">title banner</header>
 
-<div class="dash">
-  <header class="top">
-    <label class="nav-btn" for="nav-toggle"><span class="bar"></span> Menu</label>
-    <div class="brand">title banner</div>
-    <div class="user">ユーザー名</div>
-  </header>
+  <main class="login-wrap">
+    <section class="card" aria-labelledby="login-title">
+      <h1 id="login-title" class="sr-only">Sign in</h1>
 
-  <aside class="side">
-    <button class="btn"><span class="ic">🏠</span><span class="txt">Home</span></button>
-    <button class="btn"><span class="ic">⚙️</span><span class="txt">設定</span></button>
-    <button class="btn"><span class="ic">✏️</span><span class="txt">作成</span></button>
-  </aside>
-    <main class="main">
-      <section class="box">
-        <h2 class="welcome">ようこそ、ユーザー名さん</h2>
-
-        <div class="msg-head">
-          <strong>新着メッセージ</strong>
+      <form>
+        <div class="form-row">
+          <label class="label" for="uid">User ID</label>
+          <input class="input" id="uid" name="uid" autocomplete="username" />
         </div>
 
-        <div class="msg-list">
-          <article class="msg">
-            <div>ダミー本文 1</div>
-            <time datetime="2025-08-26">now</time>
-          </article>
-          <article class="msg">
-            <div>ダミー本文 2</div>
-            <time datetime="2025-08-26">1h</time>
-          </article>
-          <article class="msg">
-            <div>ダミー本文 3</div>
-            <time datetime="2025-08-26">昨日</time>
-          </article>
+        <div class="form-row">
+          <label class="label" for="pwd">Password</label>
+          <input class="input" id="pwd" name="pwd" type="password" autocomplete="current-password" />
         </div>
-      </section>
-    </main>
-  </div>
+
+        <button class="btn" type="submit">Sign in</button>
+
+        <!-- 認証失敗時に msg--show を付与して表示 -->
+        <p class="msg" role="alert">ID またはパスワードが違います。</p>
+      </form>
+    </section>
+  </main>
 
   <span class="site-tag">defence site</span>
+
+  <script src="scripts/index.js"></script>
 </body>
 </html>

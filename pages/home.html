@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="base.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="sidebar.css" />
+  <link rel="stylesheet" href="button.css" />
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="msg.css" />
+  <link rel="stylesheet" href="site-tag.css" />
+  <link rel="stylesheet" href="others.css" />
+</head>
+<body>
+  <input id="nav-toggle" type="checkbox" checked>
+
+<div class="dash">
+  <header class="top">
+    <label class="nav-btn" for="nav-toggle"><span class="bar"></span> Menu</label>
+    <div class="brand">title banner</div>
+    <div class="user">ユーザー名</div>
+  </header>
+
+  <aside class="side">
+    <button class="btn"><span class="ic">🏠</span><span class="txt">Home</span></button>
+    <button class="btn"><span class="ic">⚙️</span><span class="txt">設定</span></button>
+    <button class="btn"><span class="ic">✏️</span><span class="txt">作成</span></button>
+  </aside>
+    <main class="main">
+      <section class="box">
+        <h2 class="welcome">ようこそ、ユーザー名さん</h2>
+
+        <div class="msg-head">
+          <strong>新着メッセージ</strong>
+        </div>
+
+        <div class="msg-list">
+          <article class="msg">
+            <div>ダミー本文 1</div>
+            <time datetime="2025-08-26">now</time>
+          </article>
+          <article class="msg">
+            <div>ダミー本文 2</div>
+            <time datetime="2025-08-26">1h</time>
+          </article>
+          <article class="msg">
+            <div>ダミー本文 3</div>
+            <time datetime="2025-08-26">昨日</time>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <span class="site-tag">defence site</span>
+</body>
+</html>
