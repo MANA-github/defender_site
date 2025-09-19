@@ -1,37 +1,50 @@
-import { serveDir } from "https://deno.land/std@0.203.0/http/file_server.ts";
+import { serveDir } from "https://deno.land/std@0.224.0/http/file_server.ts";
 
+// --- ユーザーとパスワードの定義 ---
 const users = {
   "TestUser": "TestPass",
   "admin": "1234",
 };
 
+// --- セッション管理 ---
 const sessions = new Map();
-function generateSessionId() {
-  return crypto.randomUUID();
-}
 
-Deno.serve({ hostname: "0.0.0.0", port: 8080 }, async (req) => {
+// --- CORS ヘッダー ---
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+// --- サーバー起動 ---
+Deno.serve({ hostname: "0.0.0.0", port: 80 }, async (req) => {
   const url = new URL(req.url);
+  const pathname = url.pathname;
 
-  // --- CORS ヘッダを統一 ---
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-
-  // --- プリフライト対応 ---
+  // --- プリフライト対応（CORS） ---
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders });
   }
 
-  if (req.method === "POST" && url.pathname === "/login") {
+  // --- ログイン処理 ---
+  if (req.method === "POST" && pathname === "/login") {
     try {
-      const { userId, password } = await req.json();
+      const contentType = req.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        return new Response(JSON.stringify({ message: "Invalid Content-Type" }), {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        });
+      }
 
-      console.log(userId, password);
-      console.log(req);
+      const raw = await req.text();
+      console.log("📝 Raw body:", raw);
 
+      const { userId, password } = JSON.parse(raw);
+      console.log("✅ Parsed:", userId, password);
 
       if (users[userId] && users[userId] === password) {
         const sessionId = generateSessionId();
@@ -41,35 +54,57 @@ Deno.serve({ hostname: "0.0.0.0", port: 8080 }, async (req) => {
           status: 200,
           headers: {
             ...corsHeaders,
-            "Set-Cookie": `session=${sessionId}; HttpOnly; Path=/`,
+            "Set-Cookie": `session=${sessionId}; HttpOnly; Path=/; SameSite=Lax`,
             "Content-Type": "application/json",
           },
         });
       } else {
         return new Response(JSON.stringify({ message: "認証失敗" }), {
           status: 401,
-          headers: corsHeaders,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
         });
       }
-    } catch {
+    } catch (e) {
+      console.error("❌ Login Error:", e);
       return new Response(JSON.stringify({ message: "Bad Request" }), {
         status: 400,
-        headers: corsHeaders,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
       });
     }
   }
 
+  // --- 認証チェック ---
   const cookie = req.headers.get("cookie") || "";
   const match = cookie.match(/session=([a-f0-9-]+)/);
   const sessionId = match?.[1];
   const loggedIn = sessionId && sessions.has(sessionId);
 
-  if (url.pathname === "/pages/home.html") {
+  // --- 認証必須ページ（例: /pages/home.html） ---
+  if (pathname === "/pages/home.html") {
     if (!loggedIn) {
-      return new Response("Unauthorized", { status: 401, headers: corsHeaders });
+      return new Response("Unauthorized", {
+        status: 401,
+        headers: corsHeaders,
+      });
     }
-    return serveDir(req, { fsRoot: "public", urlRoot: "", index: "pages/home.html" });
+    // 認証済みならページ表示
+    return serveDir(req, {
+      fsRoot: "public",
+      urlRoot: "",
+      index: "pages/home.html",
+    });
   }
 
-  return serveDir(req, { fsRoot: "public", index: "index.html" });
+  // --- 通常の静的ファイル配信（public以下） ---
+  return serveDir(req, {
+    fsRoot: "public",
+    urlRoot: "",
+    index: "index.html",
+  });
 });
