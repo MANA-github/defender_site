@@ -1,6 +1,6 @@
 import { serveDir } from "https://deno.land/std@0.224.0/http/file_server.ts";
 
-// --- ユーザーとパスワードの定義 ---
+// --- ユーザーとパスワード ---
 const users = {
   "TestUser": "TestPass",
   "admin": "1234",
@@ -9,21 +9,32 @@ const users = {
 // --- セッション管理 ---
 const sessions = new Map();
 
-// --- CORS ヘッダー ---
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+// --- セッションID生成 ---
+function generateSessionId() {
+  const array = new Uint8Array(16);
+  crypto.getRandomValues(array);
+  return Array.from(array, b => b.toString(16).padStart(2, "0")).join("");
+}
+
+// --- 動的 CORS ヘッダー ---
+function createCorsHeaders(req) {
+  const origin = req.headers.get("origin") || "";
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Credentials": "true",
+  };
+}
 
 // --- サーバー起動 ---
-Deno.serve({ hostname: "0.0.0.0", port: 80 }, async (req) => {
+Deno.serve({ hostname: "0.0.0.0", port: 8080 }, async (req) => {
   const url = new URL(req.url);
   const pathname = url.pathname;
 
-  // --- プリフライト対応（CORS） ---
+  // プリフライト（OPTIONS）対応
   if (req.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: corsHeaders });
+    return new Response(null, { status: 204, headers: createCorsHeaders(req) });
   }
 
   // --- ログイン処理 ---
@@ -33,18 +44,12 @@ Deno.serve({ hostname: "0.0.0.0", port: 80 }, async (req) => {
       if (!contentType.includes("application/json")) {
         return new Response(JSON.stringify({ message: "Invalid Content-Type" }), {
           status: 400,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+          headers: { ...createCorsHeaders(req), "Content-Type": "application/json" },
         });
       }
 
       const raw = await req.text();
-      console.log("📝 Raw body:", raw);
-
       const { userId, password } = JSON.parse(raw);
-      console.log("✅ Parsed:", userId, password);
 
       if (users[userId] && users[userId] === password) {
         const sessionId = generateSessionId();
@@ -53,47 +58,42 @@ Deno.serve({ hostname: "0.0.0.0", port: 80 }, async (req) => {
         return new Response(JSON.stringify({ message: "認証成功" }), {
           status: 200,
           headers: {
-            ...corsHeaders,
-            "Set-Cookie": `session=${sessionId}; HttpOnly; Path=/; SameSite=Lax`,
+            ...createCorsHeaders(req),
+            // クロスオリジンでも受け取れるように SameSite=None、ローカルテストでは Secure は外す
+            "Set-Cookie": `session=${sessionId}; HttpOnly; Path=/; SameSite=None`,
             "Content-Type": "application/json",
           },
         });
       } else {
         return new Response(JSON.stringify({ message: "認証失敗" }), {
           status: 401,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+          headers: { ...createCorsHeaders(req), "Content-Type": "application/json" },
         });
       }
     } catch (e) {
-      console.error("❌ Login Error:", e);
+      console.error("Login Error:", e);
       return new Response(JSON.stringify({ message: "Bad Request" }), {
         status: 400,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
+        headers: { ...createCorsHeaders(req), "Content-Type": "application/json" },
       });
     }
   }
+  
+// --- 認証チェック ---
+const cookieHeader = req.headers.get("cookie") || "";
+const match = cookieHeader.match(/session=([a-f0-9]+)/);
+const sessionId = match ? match[1] : null;
+const loggedIn = sessionId && sessions.has(sessionId);
 
-  // --- 認証チェック ---
-  const cookie = req.headers.get("cookie") || "";
-  const match = cookie.match(/session=([a-f0-9-]+)/);
-  const sessionId = match?.[1];
-  const loggedIn = sessionId && sessions.has(sessionId);
 
-  // --- 認証必須ページ（例: /pages/home.html） ---
+  // --- 認証必須ページ ---
   if (pathname === "/pages/home.html") {
     if (!loggedIn) {
       return new Response("Unauthorized", {
         status: 401,
-        headers: corsHeaders,
+        headers: createCorsHeaders(req),
       });
     }
-    // 認証済みならページ表示
     return serveDir(req, {
       fsRoot: "public",
       urlRoot: "",
@@ -101,7 +101,7 @@ Deno.serve({ hostname: "0.0.0.0", port: 80 }, async (req) => {
     });
   }
 
-  // --- 通常の静的ファイル配信（public以下） ---
+  // --- 通常の静的ファイル配信 ---
   return serveDir(req, {
     fsRoot: "public",
     urlRoot: "",

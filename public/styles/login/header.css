@@ -1,31 +1,10 @@
-<<<<<<< HEAD
 /* === ヘッダー部分 === */
 .head {
   padding:14px 20px;
   border-bottom:1px solid var(--bd);
-  background:#fff;
+  background:#ffffff;
   font-weight:800;
-  font-size:clamp(22px,4vw,36px);
+  font-size:clamp(22px,200vw,36px);
   letter-spacing:.02em;
   text-align:center;
 }
-=======
-/* =========================
-   ヘッダー
-========================= */
-.top{
-  grid-column:1 / -1;
-  display:grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items:center;
-  height:var(--hTop);
-  padding:0 16px 0 10px;
-  background:var(--top);
-  border-bottom:1px solid var(--bd);
-}
-.brand{grid-column:2; text-align:center; font-weight:900; font-size:20px; letter-spacing:.02em}
-.nav-btn{grid-column:1; justify-self:start; display:inline-flex; gap:8px; align-items:center; padding:8px 10px; border-radius:10px; background:#eef2ff; color:#1e3a8a; font-weight:800; cursor:pointer; user-select:none;}
-.nav-btn .bar{width:18px; height:2px; background:#1e3a8a; box-shadow:0 6px 0 #1e3a8a, 0 -6px 0 #1e3a8a;}
-.user{grid-column:3; justify-self:end; color:var(--sub); font-weight:600}
-
->>>>>>> origin/def-home

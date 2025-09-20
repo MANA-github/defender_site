@@ -1,8 +1,9 @@
-const SERVER_URL = "http://192.168.10.101:80/login";
+const SERVER_URL = "http://192.168.3.9:8080/login";
 
-let form = document.getElementById("form");
-let uid  = document.getElementById("uid");
-let pwd  = document.getElementById("pwd");
+const form = document.getElementById("form");
+const uid  = document.getElementById("uid");
+const pwd  = document.getElementById("pwd");
+const msg  = document.getElementById("msg");
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -13,28 +14,39 @@ form.addEventListener("submit", async (event) => {
   }
 
   const payload = {
-    userId: uid.value,     // ✅ 修正: キー名一致
+    userId: uid.value,
     password: pwd.value
   };
 
   try {
+    // fetch でログイン
     const res = await fetch(SERVER_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      credentials: "include" // ← Cookie を受け取る
     });
 
     const data = await res.json();
-
     console.log("サーバーからのレスポンス:", data);
 
     if (res.ok) {
-      alert("ログイン成功！");
-      location.href = "/pages/home.html";
+      // GET で /pages/home.html を再度 fetch して Cookie を送信
+      const homeRes = await fetch("http://192.168.3.9:8080/pages/home.html", {
+        method: "GET",
+        credentials: "include"
+      });
+
+      if (homeRes.ok) {
+        // ページ移動
+        location.href = "/pages/home.html";
+      } else {
+        msg.innerHTML = "セッションが無効です。再ログインしてください。";
+      }
+
     } else {
       alert("ログイン失敗: " + data.message);
+      msg.innerHTML = "ID またはパスワードが違います。";
     }
 
   } catch (err) {
